@@ -34,4 +34,18 @@ class BankruptcyController extends Controller
 
         return $this->json('test-data', 200);
     }
+
+    /**
+     * @Route("/create-file-for-yandex-map", name="bankruptcy_create_file_for_yandex_map")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function createJsonFile(Request $request)
+    {
+        $json = $request->request->get('json');
+        $file = fopen('test-file.geojson', 'w');
+        fwrite($file, $json);
+
+        return $this->json('success');
+    }
 }
