@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\ExcelType;
+use App\Form\ReadExcelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,8 +20,8 @@ class BankruptcyController extends Controller
      */
     public function indexAction()
     {
-        $excelForm = $this->createForm(ExcelType::class, null, [
-            'action' => $this->generateUrl('excel_save_file'),
+        $excelForm = $this->createForm(ReadExcelType::class, null, [
+            'action' => $this->generateUrl('excel_get_data'),
         ]);
 
         return $this->render('bankruptcy/index.html.twig', [

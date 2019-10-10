@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ExcelType;
 use App\Services\ExcelService;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -35,14 +36,46 @@ class ExcelController extends Controller
         ]);
     }
 
-//    /**
-//     * @Route("/get-data", name="excel_get_data")
-//     * @return Response
-//     * @throws Exception If error.
-//     */
-//    public function getData()
-//    {
-//    }
+    /**
+     * @Route("/get-list", name = "excel_get_list")
+     * @return Response
+     */
+    public function getHtmlFileList()
+    {
+        $fileList = $this->getExcelService()->getFileList();
+
+        return $this->render('excel/file_list.html.twig', [
+            'files' => $fileList,
+        ]);
+    }
+
+    /**
+     * @Route("/get-form", name = "excel_get_form")
+     * @return Response
+     */
+    public function getHtmlForm()
+    {
+        $excelForm = $this->createForm(ExcelType::class, null, [
+            'action' => $this->generateUrl('excel_get_data'),
+        ]);
+
+        return $this->render('excel/form.html.twig', [
+            'excel_form' => $excelForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/get-data", name="excel_get_data")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function getData(Request $request)
+    {
+        $data = $this->getExcelService()->getData('humster.xlsx');
+
+        return $this->json($data, 200);
+    }
 
     /************************************************************************************************
      *                                Protected methods

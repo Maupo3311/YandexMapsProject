@@ -28,9 +28,6 @@ class ExcelService
     {
         $this->excelDir = $excelDir;
         $this->factory  = $factory;
-
-//        /** @var Spreadsheet $phpExcelObject */
-//        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject('uploads/excel/test.xlsx');
     }
 
     /**
@@ -46,13 +43,17 @@ class ExcelService
     }
 
     /**
+     * @param string $filename
      * @return array
      * @throws Exception
      */
-    public function getData()
+    public function getData(string $filename)
     {
+        /** @var Spreadsheet $phpExcelObject */
+        $phpExcelObject = $this->factory->createPHPExcelObject("{$this->excelDir}/{$filename}");
+
         $cadNumbers = [];
-        foreach ($this->spreadsheet->getWorksheetIterator() as $worksheet) {
+        foreach ($phpExcelObject->getWorksheetIterator() as $worksheet) {
             foreach ($worksheet->getRowIterator() as $row) {
                 $cellIterator = $row->getCellIterator();
                 $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
@@ -62,7 +63,7 @@ class ExcelService
                         $value      = $cell->getCalculatedValue();
 
                         if (preg_match("#B#", $coordinate)) {
-                            if (preg_match("#^.+\№(.+)$#", $value)) {
+                            if (preg_match("#^\.+№(.+)$#", $value)) {
                                 $cadNumbers[] = preg_replace("#^.+№(.+)$#",'$1', $value);
                             }
                         }
@@ -72,5 +73,15 @@ class ExcelService
         }
 
         return $cadNumbers;
+    }
+
+    /**
+     * @return array|false
+     */
+    public function getFileList()
+    {
+        $files = scandir($this->excelDir);
+
+        return array_slice($files, 2);
     }
 }

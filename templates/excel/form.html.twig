@@ -1,0 +1,7 @@
+<div>
+    {{ form_start(excel_form, {'attr': {'id': 'excel-form'}}) }}
+    {{ form_row(excel_form.filename) }}
+    {{ form_row(excel_form.file) }}
+    <input type="submit" value="Сохранить файл" class="btn btn-success">
+    {{ form_end(excel_form) }}
+</div>

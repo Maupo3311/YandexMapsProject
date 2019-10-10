@@ -1,0 +1,19 @@
+<style>
+    #excel-list-window {
+        padding: 20px;
+    }
+    .excel-list-row {
+        border-bottom: 1px solid #7b808b;
+        padding: 10px;
+    }
+    .excel-list-row:hover {
+        background: #ededed;
+        cursor: pointer;
+    }
+</style>
+
+<div id="excel-list-window">
+    {% for file in files %}
+        <h3 onclick="selectFile(this)" class="excel-list-row">{{ file }}</h3>
+    {% endfor %}
+</div>
