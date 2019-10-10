@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Services\ExcelService;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,35 +19,43 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExcelController extends Controller
 {
     /**
-     * @Route("/get-data", name="exel_get_data")
-     * @return Response
-     * @throws Exception
+     * @Route("/save-file", name="excel_save_file")
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function getData()
+    public function saveFile(Request $request)
     {
-        /** @var Spreadsheet $phpExcelObject */
-        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject('uploads/excel/test.xlsx');
+        $filename = $request->request->get('excel')['filename'];
+        $file     = $request->files->get('excel')['file'];
+        $this->getExcelService()->saveFile($file, $filename);
 
-        $cadNumbers = [];
-        foreach ($phpExcelObject->getWorksheetIterator() as $worksheet) {
-            foreach ($worksheet->getRowIterator() as $row) {
-                $cellIterator = $row->getCellIterator();
-                $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
-                foreach ($cellIterator as $cell) {
-                    if (!is_null($cell)) {
-                        $coordinate = $cell->getCoordinate();
-                        $value      = $cell->getCalculatedValue();
+        return $this->json([
+            'type'    => 'success',
+            'message' => "File with name {$filename} successful saved!",
+        ]);
+    }
 
-                        if (preg_match("#B#", $coordinate)) {
-                            if (preg_match("#^.+\№(.+)$#", $value)) {
-                                $cadNumbers[] = preg_replace("#^.+№(.+)$#",'$1', $value);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//    /**
+//     * @Route("/get-data", name="excel_get_data")
+//     * @return Response
+//     * @throws Exception If error.
+//     */
+//    public function getData()
+//    {
+//    }
 
-        return $this->json($cadNumbers);
+    /************************************************************************************************
+     *                                Protected methods
+     ************************************************************************************************/
+
+    /**
+     * @return ExcelService
+     */
+    protected function getExcelService()
+    {
+        /** @var ExcelService $service */
+        $service = $this->get('app.excel_service');
+
+        return $service;
     }
 }

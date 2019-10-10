@@ -2,59 +2,49 @@
 
 {% block javascripts_top %}
     {{ parent() }}
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=3834eace-6729-4d52-9da4-ce2d5aba9c39&lang=ru_RU" type="text/javascript"></script>
-    <script src="/js/yandex_maps_functions.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=3834eace-6729-4d52-9da4-ce2d5aba9c39&lang=ru_RU"
+            type="text/javascript"></script>
+    <script src="{{ asset('js/Classes/YandexConstructorService.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-    <div id="create-object-form">
-        <input id="cad-number" type="text" placeholder="Кадастровый номер...">
-        <input onclick="createObject()" type="button" value="Создать на карте">
-        <input type="button" value="Создать файл">
+    <style>
+        #excel-image {
+            width: 150px;
+        }
+        #excel-form {
+            width: 80%;
+        }
+        .sub-window {
+            width: 49%;
+        }
+
+        #left-window {
+            border-right: 1px solid black;
+        }
+
+        #right-window {
+            border-left: 1px solid black;
+        }
+    </style>
+
+    <div id="common-window">
+        <div class="sub-window" id="left-window">
+            <img id="excel-image" src="https://talentedme.ru/upload/learning/c39/microsoft-excel-vector.jpg" alt="excel">
+            {{ form_start(excel_form, {'attr': {'id': 'excel-form'}}) }}
+                {{ form_row(excel_form.filename) }}
+                {{ form_row(excel_form.file) }}
+                <input type="submit" value="Сохранить файл" class="btn btn-success">
+            {{ form_end(excel_form) }}
+        </div>
+        <div class="sub-window" id="right-window">
+
+        </div>
     </div>
 
-    <div id="map" style="width: 600px; height: 400px"></div>
+    {#    <div id="map" style="width: 600px; height: 400px"></div>#}
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        ymaps.ready(init);
-
-        function init() {
-            var myMap = new ymaps.Map('map', {
-                    center: [55.76, 37.64],
-                    zoom: 10
-                }, {
-                    searchControlProvider: 'yandex#search'
-                }),
-                objectManager = new ymaps.ObjectManager({
-                    clusterize: true,
-                    gridSize: 32,
-                    clusterDisableClickZoom: true
-                });
-
-            $.getJSON('../../test.geojson')
-                .done(function (geoJson) {
-                    var yandexService = new YandexConstructorService(geoJson);
-                    yandexService.addFeature('name', 'description', ['00001', '000002']);
-                    // createFile();
-                });
-        }
-    </script>
-    <script>
-        function createObject() {
-            var cadNumber = $('#cad-number').val();
-
-            console.log(cadNumber);
-
-            $.ajax({
-                method: "POST",
-                url: "/bankruptcy/create-object-on-yandex-map",
-                data: "cadNumber=" + cadNumber,
-                success: function (response) {
-                    console.log(response);
-                }
-            });
-        }
-    </script>
+    <script src="{{ asset('js/Bankruptcy.js') }}"></script>
 {% endblock %}
