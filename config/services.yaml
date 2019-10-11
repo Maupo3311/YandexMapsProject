@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     excel_upload_directory: "%kernel.project_dir%/public/uploads/excel"
+    api_rosreestr_token: 'FOOO-781Y-HKRH-LD3K'
 
 services:
     # default configuration for services in *this* file
@@ -32,4 +33,9 @@ services:
         arguments:
             - "%excel_upload_directory%"
             - "@phpexcel"
+        public: true
+    app.api_rosreestr_service:
+        class: App\Services\ApiRosreestrService
+        arguments:
+            - "%api_rosreestr_token%"
         public: true

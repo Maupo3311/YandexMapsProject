@@ -1,6 +1,6 @@
 $(document).ready(function () {
     loadExcelList();
-    ymaps.ready(init);
+    // ymaps.ready(init);
 });
 
 $('body').on('submit', '#excel-form', function (e) {
@@ -28,23 +28,22 @@ $('body').on('submit', '#excel-form', function (e) {
 
 $('body').on('submit', '#read-excel-form', function (e) {
     e.preventDefault();
-    var formData = new FormData(this);
 
     $.ajax({
         type: 'GET',
         url: this.action,
-        data: formData,
+        data: $(this).serialize(),
         contentType: false,
         processData: false,
         cache: false,
         dataType: "json",
         success: function (response) {
-            console.log(response);
-            loadExcelList();
+            var excelCadNumberBlock = document.getElementById('excel-cad-numbers');
+            excelCadNumberBlock.innerHTML = response.responseText;
         },
         error: function (response) {
-            console.log('error');
-            loadExcelList();
+            var excelCadNumberBlock = document.getElementById('excel-cad-numbers');
+            excelCadNumberBlock.innerHTML = response.responseText;
         }
     })
 });

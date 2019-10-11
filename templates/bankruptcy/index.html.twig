@@ -2,8 +2,8 @@
 
 {% block javascripts_top %}
     {{ parent() }}
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=3834eace-6729-4d52-9da4-ce2d5aba9c39&lang=ru_RU"
-            type="text/javascript"></script>
+{#    <script src="https://api-maps.yandex.ru/2.1/?apikey=3834eace-6729-4d52-9da4-ce2d5aba9c39&lang=ru_RU"#}
+{#            type="text/javascript"></script>#}
     <script src="{{ asset('js/Classes/YandexConstructorService.js') }}"></script>
 {% endblock %}
 
@@ -44,6 +44,9 @@
                     {{ form_row(excel_form.filename) }}
                     <input type="submit" class="btn btn-success" value="Получить каскадные номера">
                 {{ form_end(excel_form) }}
+            </div>
+            <div id="excel-cad-numbers">
+
             </div>
         </div>
     </div>

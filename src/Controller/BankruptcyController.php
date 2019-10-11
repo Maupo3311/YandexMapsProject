@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ReadExcelType;
+use App\Services\ApiRosreestrService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,5 +55,19 @@ class BankruptcyController extends Controller
         fwrite($file, $json);
 
         return $this->json('success');
+    }
+
+    /**
+     * @Route("/test")
+     * @param Request $request
+     */
+    public function getDataByCadNumber(Request $request)
+    {
+        /** @var ApiRosreestrService $apiService */
+        $apiService = $this->get('app.api_rosreestr_service');
+
+        $number = $apiService->getDataByCadNumber('48:20:0046401:1724');
+
+        echo $number; die();
     }
 }

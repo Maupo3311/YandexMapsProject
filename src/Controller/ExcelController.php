@@ -56,7 +56,7 @@ class ExcelController extends Controller
     public function getHtmlForm()
     {
         $excelForm = $this->createForm(ExcelType::class, null, [
-            'action' => $this->generateUrl('excel_get_data'),
+            'action' => $this->generateUrl('excel_save_file'),
         ]);
 
         return $this->render('excel/form.html.twig', [
@@ -67,14 +67,17 @@ class ExcelController extends Controller
     /**
      * @Route("/get-data", name="excel_get_data")
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      * @throws Exception
      */
-    public function getData(Request $request)
+    public function getDataHtml(Request $request)
     {
-        $data = $this->getExcelService()->getData('humster.xlsx');
+        $formData = $request->query->get('read_excel');
+        $data = $this->getExcelService()->getData($formData['filename']);
 
-        return $this->json($data, 200);
+        return $this->render('excel/cad_numbers.html.twig', [
+           'cad_numbers' => $data,
+        ]);
     }
 
     /************************************************************************************************

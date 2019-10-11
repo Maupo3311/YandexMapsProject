@@ -63,8 +63,8 @@ class ExcelService
                         $value      = $cell->getCalculatedValue();
 
                         if (preg_match("#B#", $coordinate)) {
-                            if (preg_match("#^\.+№(.+)$#", $value)) {
-                                $cadNumbers[] = preg_replace("#^.+№(.+)$#",'$1', $value);
+                            if (preg_match("#^.+[0-9]{2}\:[0-9]{2}\:[0-9]{6,8}\:[0-9]{2,4}.*$#", $value)) {
+                                $cadNumbers[] = preg_replace("#^.+([0-9]{2}\:[0-9]{2}\:[0-9]{6,8}\:[0-9]{2,4}).*$#",'$1', $value);
                             }
                         }
                     }
