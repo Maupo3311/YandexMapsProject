@@ -6,6 +6,7 @@
 parameters:
     excel_upload_directory: "%kernel.project_dir%/public/uploads/excel"
     api_rosreestr_token: 'FOOO-781Y-HKRH-LD3K'
+    api_google_maps_key: 'AIzaSyDkB4cmFjSKr-7CxYXaoiEXUIPIN_nsfa8'
 
 services:
     # default configuration for services in *this* file
@@ -39,3 +40,9 @@ services:
         arguments:
             - "%api_rosreestr_token%"
         public: true
+    app.google_maps_service:
+        class: App\Services\GoogleMapsService
+        arguments:
+            - "%api_google_maps_key%"
+        public: true
+

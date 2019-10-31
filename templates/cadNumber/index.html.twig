@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/cadNumber.css') }}">
+{% endblock %}
+
+{% block javascripts_top %}
+    {{ parent() }}
+{#    <script src="https://api-maps.yandex.ru/2.1/?apikey=3834eace-6729-4d52-9da4-ce2d5aba9c39&lang=ru_RU"#}
+{#            type="text/javascript"></script>#}
+    <script src="{{ asset('js/Classes/YandexConstructorService.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="common-window">
+        <div class="sub-window" id="left-window">
+            <div>
+                <input id="get_excel_files_button" onclick="loadExcelList()" type="button" class="btn btn-success top-button" value="Мои Файлы">
+                <input id="get_excel_form_button" onclick="loadExcelForm()" type="button" class="btn btn-success top-button" value="Добавить Новый Файл">
+            </div>
+            <div class="row">
+                <button id="get_cad_numbers_button">
+                    <img id="excel-image" src="https://talentedme.ru/upload/learning/c39/microsoft-excel-vector.jpg" alt="excel">
+                </button>
+                <div id="selected_file_block">
+                    <b>Выбранный файл: </b><br>
+                    <span id="selected_file_name"></span>
+                </div>
+            </div>
+            <div id="left-window-content"></div>
+        </div>
+        <div class="sub-window" id="right-window">
+            <div id="message">
+
+            </div>
+            <div id="right-window-content">
+
+            </div>
+            <div id="excel-cad-numbers">
+
+            </div>
+        </div>
+    </div>
+
+    {#    <div id="map" style="width: 600px; height: 400px"></div>#}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/Classes/ImportService.js') }}"></script>
+    <script src="{{ asset('js/Classes/GoogleMapsService.js') }}"></script>
+    <script src="{{ asset('js/Classes/CadNumberService.js') }}"></script>
+    <script src="{{ asset('js/cadNumber/main.js') }}"></script>
+{% endblock %}

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ExcelController
  * @package App\Controller
- * @Route("/excel")
+ * @Route("/excel", options={"expose"=true})
  */
 class ExcelController extends Controller
 {
@@ -72,17 +72,23 @@ class ExcelController extends Controller
      */
     public function getDataHtml(Request $request)
     {
-        $formData = $request->query->get('read_excel');
-        $data = $this->getExcelService()->getData($formData['filename']);
+        $selectedFile = $request->query->get('selectedFile');
+        $data         = $this->getExcelService()->getData($selectedFile);
 
-        return $this->render('excel/cad_numbers.html.twig', [
-           'cad_numbers' => $data,
+        $html = $this->render('cadNumber/cad_numbers.html.twig', [
+            'cad_numbers' => $data,
+        ]);
+
+        return $this->json([
+            'status' => 'success',
+            'html'   => $html,
+            'data'   => $data,
         ]);
     }
 
-    /************************************************************************************************
+    /***************************************************************************************
      *                                Protected methods
-     ************************************************************************************************/
+     **************************************************************************************/
 
     /**
      * @return ExcelService

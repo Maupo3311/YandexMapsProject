@@ -11,22 +11,39 @@ class ApiRosreestrService
 
     /**
      * ApiRosreestrService constructor.
-     * @param string $token
+     * @param string $token User token.
      */
     public function __construct(string $token)
     {
         $this->token = $token;
     }
 
+    /**
+     * @param array $cadNumbers Array cad numbers.
+     * @return array
+     */
+    public function getDataByCadNumbers(array $cadNumbers)
+    {
+        $data = [];
+        foreach ($cadNumbers as $cadNumber) {
+            $data[] = $this->getDataByCadNumber($cadNumber);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $cadNumber Cad number.
+     * @return bool|string
+     */
     public function getDataByCadNumber(string $cadNumber)
     {
         $headers = [
             "Token: {$this->token}",
-            'Content-Type: application/json',
+            'content-type: application/x-www-form-urlencoded',
             'Host: apirosreestr.ru',
             'POST /api/cadaster/search HTTP/1.1',
         ];
-        $query =
 
         $url = 'https://apirosreestr.ru/api/cadaster/search';
         $ch  = curl_init();

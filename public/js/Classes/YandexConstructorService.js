@@ -1,6 +1,17 @@
 class YandexConstructorService {
     constructor(yandexGeoJson = {}) {
-        this.yandexGeoJson = yandexGeoJson;
+        if (yandexGeoJson === {}) {
+            this.yandexGeoJson = {
+                "type": "FeatureCollection",
+                "metadata": {
+                    "name": "Test",
+                    "creator": "Yandex Map Constructor"
+                },
+                "features": []
+            }
+        } else {
+            this.yandexGeoJson = yandexGeoJson;
+        }
     }
 
     addFeature(name, description, coordinates) {

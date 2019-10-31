@@ -1,0 +1,36 @@
+#excel-image {
+    width: 120px;
+    margin-top: -28px;
+}
+#get_cad_numbers_button {
+    height: 150px;
+    overflow: hidden;
+    margin-top: 30px;
+    margin-left: 15px;
+}
+.sub-window {
+    padding: 20px;
+    width: 50%;
+    display: inline-block;
+}
+#left-window {
+    float: left;
+    border-right: 1px solid black;
+}
+.top-button {
+    width: 49%;
+}
+#right-window {
+    float: right;
+}
+#selected_file_block {
+    height: 40%;
+    margin-top: 13%;
+    margin-left: 10%;
+    font-size: 20px;
+}
+#message {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+}
